@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ collection.name }} — Мои подборки — Электронная библиотека{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Главная</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('collections.index') }}">Мои подборки</a></li>
+        <li class="breadcrumb-item active">{{ collection.name }}</li>
+    </ol>
+</nav>
+
+<h2 class="mb-4">
+    <i class="bi bi-bookmark-star me-2"></i>{{ collection.name }}
+    <span class="badge bg-secondary fs-6 ms-2">{{ collection.books | length }} кн.</span>
+</h2>
+
+{% if collection.books %}
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    {% for book in collection.books %}
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            {% if book.cover %}
+            <img src="{{ url_for('static', filename='covers/' + book.cover.file_name) }}"
+                 class="card-img-top" alt="Обложка"
+                 style="height:180px;object-fit:cover">
+            {% else %}
+            <div class="bg-secondary text-white d-flex align-items-center justify-content-center"
+                 style="height:180px">
+                <span class="small">Нет обложки</span>
+            </div>
+            {% endif %}
+            <div class="card-body">
+                <h6 class="card-title mb-1">{{ book.title }}</h6>
+                <p class="card-text text-muted small mb-2">{{ book.author }}, {{ book.year }}</p>
+                <div>
+                    {% for genre in book.genres %}
+                    <span class="badge bg-secondary small">{{ genre.name }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card-footer bg-transparent">
+                <a href="{{ url_for('books.view_book', book_id=book.id) }}"
+                   class="btn btn-sm btn-outline-primary w-100">
+                    <i class="bi bi-eye me-1"></i>Просмотр
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    <i class="bi bi-info-circle me-1"></i>В этой подборке пока нет книг.
+    Добавьте книги через страницу просмотра книги.
+</div>
+{% endif %}
+{% endblock %}
