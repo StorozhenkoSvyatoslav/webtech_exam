@@ -2,6 +2,8 @@
 
  Стороженко Святослав Валериевич 241-326
 
+ ссылка https://svyatoslavstorozhenko.pythonanywhere.com/
+
 # админ:
 login: admin123 | 
 password: 123123
